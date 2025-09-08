@@ -1,16 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 import ApperIcon from "@/components/ApperIcon";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
 import { createTask, generateTaskDescription } from "@/services/api/taskService";
-import { format } from "date-fns";
-
 const QuickAddBar = ({ categories, onTaskAdded, selectedCategory }) => {
   const [title, setTitle] = useState("");
 const [categoryId, setCategoryId] = useState(selectedCategory || "");
-  const [priority, setPriority] = useState("medium");
+const [priority, setPriority] = useState("medium");
+  const [color, setColor] = useState("blue");
   const [dueDate, setDueDate] = useState("");
   const [description, setDescription] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -31,7 +31,8 @@ title: title.trim(),
         categoryId: categoryId || categories[0]?.Id.toString(),
         priority,
         dueDate: dueDate || null,
-        completed: false,
+completed: false,
+        color,
         archived: false,
         createdAt: new Date().toISOString()
       };
@@ -40,7 +41,8 @@ title: title.trim(),
       setTitle("");
       setCategoryId(selectedCategory || "");
 setPriority("medium");
-      setDueDate("");
+setDueDate("");
+      setColor("blue");
       setDescription("");
       setIsExpanded(false);
       toast.success("Task created successfully!");
@@ -174,7 +176,38 @@ className="mt-4 space-y-4"
                   disabled={isLoading}
                 />
               </div>
+</div>
+
+            {/* Color Picker */}
+            <div className="flex-1 min-w-0">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Color
+              </label>
+              <div className="flex items-center space-x-2">
+                {[
+                  { value: "blue", class: "color-blue" },
+                  { value: "green", class: "color-green" },
+                  { value: "yellow", class: "color-yellow" },
+                  { value: "red", class: "color-red" },
+                  { value: "purple", class: "color-purple" },
+                  { value: "pink", class: "color-pink" },
+                  { value: "indigo", class: "color-indigo" },
+                  { value: "gray", class: "color-gray" }
+                ].map((colorOption) => (
+                  <button
+                    key={colorOption.value}
+                    type="button"
+                    onClick={() => setColor(colorOption.value)}
+                    className={`w-6 h-6 rounded-full border-2 transition-all ${colorOption.class} ${
+                      color === colorOption.value
+                        ? "border-gray-900 ring-2 ring-gray-300"
+                        : "border-gray-300 hover:border-gray-400"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
+          </div>
 
             <div>
 <div className="flex items-center justify-between mb-1">

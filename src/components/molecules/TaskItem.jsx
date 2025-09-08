@@ -132,9 +132,11 @@ const TaskItem = ({ task, categories, onTaskUpdated, onTaskDeleted }) => {
                 {category.name}
               </Badge>
             )}
-
-            <div className={`w-3 h-3 rounded-full ${getPriorityColor(task.priority)}`} />
+<div className={`w-3 h-3 rounded-full ${getPriorityColor(task.priority)}`} />
             
+            {task.color && (
+              <div className={`w-3 h-3 rounded-full color-${task.color}`} />
+            )}
             <span className="text-xs text-gray-500 capitalize">
               {task.priority} priority
             </span>

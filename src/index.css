@@ -57,6 +57,38 @@
   
   .category-border-health {
     border-left: 4px solid #EF4444;
+}
+  
+  .color-blue {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+  }
+  
+  .color-green {
+    background: linear-gradient(135deg, #10B981, #059669);
+  }
+  
+  .color-yellow {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+  }
+  
+  .color-red {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+  }
+  
+  .color-purple {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+  }
+  
+  .color-pink {
+    background: linear-gradient(135deg, #EC4899, #DB2777);
+  }
+  
+  .color-indigo {
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+  }
+  
+  .color-gray {
+    background: linear-gradient(135deg, #6B7280, #4B5563);
   }
 }
 
