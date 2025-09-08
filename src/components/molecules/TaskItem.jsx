@@ -92,7 +92,7 @@ const TaskItem = ({ task, categories, onTaskUpdated, onTaskDeleted }) => {
           />
         </div>
 
-        <div className="flex-1 min-w-0">
+<div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <h3 className={`text-base font-medium leading-6 ${
               task.completed ? "text-gray-500 line-through" : "text-gray-900"
@@ -114,6 +114,14 @@ const TaskItem = ({ task, categories, onTaskUpdated, onTaskDeleted }) => {
               )}
             </Button>
           </div>
+
+          {task.description && (
+            <p className={`mt-1 text-sm leading-5 ${
+              task.completed ? "text-gray-400" : "text-gray-600"
+            }`}>
+              {task.description}
+            </p>
+          )}
 
           <div className="mt-2 flex items-center space-x-3">
             {category && (

@@ -1,7 +1,8 @@
 [
-  {
+{
     "Id": 1,
     "title": "Complete quarterly financial report",
+    "description": "Prepare and finalize Q4 financial report including revenue analysis, expense breakdown, and profit margins for board presentation.",
     "categoryId": "1",
     "priority": "high",
     "dueDate": "2024-01-25",
