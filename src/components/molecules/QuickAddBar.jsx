@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
-import { createTask } from "@/services/api/taskService";
+import { createTask, generateTaskDescription } from "@/services/api/taskService";
 import { format } from "date-fns";
 
 const QuickAddBar = ({ categories, onTaskAdded, selectedCategory }) => {
@@ -15,6 +15,7 @@ const [categoryId, setCategoryId] = useState(selectedCategory || "");
   const [description, setDescription] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -22,7 +23,7 @@ const [categoryId, setCategoryId] = useState(selectedCategory || "");
       return;
     }
 
-    setIsLoading(true);
+setIsLoading(true);
     try {
       const newTask = {
 title: title.trim(),
@@ -48,6 +49,25 @@ setPriority("medium");
       toast.error("Failed to create task");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGenerateDescription = async () => {
+    if (!title.trim()) {
+      toast.error("Please enter a task title first");
+      return;
+    }
+
+    setIsGeneratingDescription(true);
+    try {
+      const generatedDescription = await generateTaskDescription(title.trim());
+      setDescription(generatedDescription);
+      toast.success("Description generated successfully!");
+    } catch (error) {
+      toast.error("Failed to generate description. Please try again.");
+      console.error('Description generation error:', error);
+    } finally {
+      setIsGeneratingDescription(false);
     }
   };
 
@@ -157,16 +177,32 @@ className="mt-4 space-y-4"
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
+<div className="flex items-center justify-between mb-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <button
+                  type="button"
+                  onClick={handleGenerateDescription}
+                  disabled={isLoading || isGeneratingDescription || !title.trim()}
+                  className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-primary-600 hover:text-primary-500 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+                  title="Generate description with AI"
+                >
+                  <ApperIcon 
+                    name={isGeneratingDescription ? "Loader2" : "Sparkles"} 
+                    size={12}
+                    className={isGeneratingDescription ? "animate-spin" : ""}
+                  />
+                  {isGeneratingDescription ? "Generating..." : "Generate with AI"}
+                </button>
+              </div>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Add a description for your task (optional)..."
+                placeholder="Add a description for your task (optional) or generate one with AI..."
                 rows={3}
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
-                disabled={isLoading}
+                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none disabled:opacity-50"
+                disabled={isLoading || isGeneratingDescription}
               />
             </div>
           </motion.div>
